@@ -12,26 +12,19 @@ public class ArduinoLEDS {
     }
 
     public void run() {
+        // 0 = Off | 1 = Disabled | 2 = Have Cube (needs sensor) | 3 = Want Cube | 4 = Climb | 5 = No Cube
         byte[] bits = new byte[1];
-        //000 = Off | 001 = Disabled | 010 = Have Gear | 011 = Want Gear | 100 = Climb | 111 = No Gear
         if(DriverStation.getInstance().isDisabled()) {
-            bits[0] = 49;
-            //MATCH MODE^^
-            //setAll(0, 0, 0);
-            //DEV MODE^^
-        } else if(!DriverStation.getInstance().isDisabled()) {
+            bits[0] = 1;
+        }else if(!DriverStation.getInstance().isDisabled()) {
             if(OI.joystick1.getRawButton(6))
-                System.out.println("6");
-//                bits[0] = 21;//Want Gear
+                bits[0] = 3;
             else if((DriverStation.getInstance().getMatchTime() != -1.0))
-                System.out.println("time");
-//                bits[0] = 56;//Climb
+                bits[0] = 4;
             else
-                bits[0] = 34;
-            //No Gear
+                bits[0] = 5;
         } else
-            System.out.println("0");
-//            bits[0] = 00;
+            bits[0] = 0;
         //Off
         byte[] bits2 = new byte[1];
         bits2[0] = 0;
